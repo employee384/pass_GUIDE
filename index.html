@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRANSMISSION</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+  
+      background: black;
+      color: white;
+      flex-direction: column;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      cursor: pointer;
+      border: 2px solid white;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      padding: 0px;
+      font-size: 15px;
+      width: 100%;
+      background: black;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const boxes = document.querySelectorAll('.box');
+    const orderDisplay = document.getElementById('order-display');
+    const submitButton = document.getElementById('submit-btn');
+    const feedback = document.getElementById('feedback');
+
+    let sequence = [];
+    let userInput = [];
+
+    function startGame() {
+      sequence = generateSequence();
+      playSequence();
+    }
+
+    function generateSequence() {
+      const colors = ['red', 'green', 'blue', 'yellow'];
+      return Array.from({ length: 5 }, () => colors[Math.floor(Math.random() * colors.length)]);
+    }
+
+    function playSequence() {
+      orderDisplay.textContent = 'WATCH THE TRANSMISSION    ';
+      userInput = [];
+      let i = 0;
+
+      const intervalId = setInterval(function () {
+        flashBox(sequence[i]);
+        i++;
+
+        if (i >= sequence.length) {
+          clearInterval(intervalId);
+          orderDisplay.textContent = 'YOUR TURN     ';
+        }
+      }, 1000);
+    }
+
+    function flashBox(color) {
+      const box = document.querySelector(`.${color}`);
+      box.style.backgroundColor = color;
+      setTimeout(() => {
+        box.style.backgroundColor = '';
+      }, 500);
+    }
+
+    boxes.forEach(function (box) {
+      box.addEventListener('click', function () {
+        const color = box.classList[1];
+        flashBox(color);
+        userInput.push(color);
+
+        if (userInput.length === sequence.length) {
+          checkSequence();
+        }
+      });
+    });
+
+    submitButton.addEventListener('click', function () {
+      checkSequence();
+    });
+
+    function checkSequence() {
+      for (let i = 0; i < sequence.length; i++) {
+        if (userInput[i] !== sequence[i]) {
+          feedback.textContent = 'INCORRECT. TRY AGAIN';
+          return;
+        }
+      }
+
+      feedback.textContent = 'CORRECT. WELL DONE';
+      setTimeout(() => {
+        feedback.textContent = '';
+        feedback.textContent = 'EBLJ';
+        startGame();
+      }, 2000);
+      
+    }
+
+    startGame();
+  });
+</script>
+
+<div class="box red"></div>
+<div class="box green"></div>
+<div class="box blue"></div>
+<div class="box yellow"></div>
+
+<p id="order-display">Watch the sequence!</p>
+
+<button id="submit-btn">ANSWER</button>
+<p id="feedback"></p>
+
+<footer>BY FORGE INC. ALL RIGHTS INCORPORATED</footer>
+
+</body>
+</html>
+
+<!--/*
+KPZM NPM MIOTIIO.
+EQMT TB XIP OMOLU GMFN.
+XIP PENP FMMW JME JXY EFAMOR CLF CJGF.
+FBI JE FIMW.
+*/-->
